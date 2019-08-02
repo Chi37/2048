@@ -40,5 +40,6 @@
 //CALCULATE SCORES - loop through the array and add the digits; and set score to that
 //add that score in DOM to display
 
-
+document.addEventListener('keypress',function(e){
+    console.log(e)})
 

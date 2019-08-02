@@ -2,6 +2,7 @@
 body {
     background-color: lavender;
     text-align: center;
+    color:slateblue;
 }
 .grid-container {
     display: grid;
@@ -16,19 +17,7 @@ body {
     padding: 40px;
     text-align: center;
     border: solid whitesmoke 1px;
+    border-radius: 1vmin;
+    background-color: thistle;
 }
 
-
-/* display: grid;
-grid-column-gap: 50px;
-grid-row-gap:40px;
-grid-template-columns: 1fr 1fr 1fr;
-background-color: #2196F3;
-padding: 13px; */
-/* 
-grid-item {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    font-size: 30px;
-    text-align: center; */
