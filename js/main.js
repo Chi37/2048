@@ -64,21 +64,31 @@ function init() {
     let i = 0
     while (i<2){
     let num = randomCellGenerator();
+    console.log(num + ' num')
     document.getElementById(`cell${num}`).textContent = 2;
     i++ }
 }
 //can't decide if i choose a rnd from grid or rndRow and rndCol for board arr
 function randomCellGenerator() {
-    let rndRow = Math.floor(Math.random() * 5 );
+    let rndRow, rndCol, val;
+    do {rndRow = Math.floor(Math.random() * 4 );
+    rndCol = Math.floor(Math.random() * 4 );
     console.log('rowidx '+ rndRow);
-    let rndCol = Math.floor(Math.random() * 5 );
-    if (!!board[rndRow][rndCol]) randomCellGenerator();
-    console.log(board[rndRow][rndCol])
-    //function that takes rndRow, rndCol 
-    //function UpdateBoard(rndRow,rndCol){
-        // board[rndRow][rndCol] = 2;
-    }
+    console.log('colidx '+ rndCol);
+    val = 2;
+    //if arr index is > 0 or truthy 
+    console.log(board[rndRow][rndCol])} 
     
+    while (board[rndRow][rndCol] !==0)
+    // if (!!board[rndRow][rndCol]) randomCellGenerator();
+
+    return rndRow * 4 + rndCol
+    
+}
+
+function updateBoard(rndRow, rndCol, val){
+    console.log(rndRow + ' updateboard row idx');
+    board[rndRow][rndCol] = val;
 }
 
 // ROWINDEX * ROW[0].LENGTH = COLINDEX === CELL#
