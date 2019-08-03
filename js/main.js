@@ -1,12 +1,30 @@
 /*----- constants -----*/
 
 //maybe object of all the numbers so you can insert into dom element
+//I went to places i couldn't go. like security alerts bc sites didn't have the green lock
 const winningScore = 2048;
-const map = {
-    1: [0][0],
-    14: [3][1]
 
-}
+
+//TODO: add colors
+// const mapColors =  {
+//     2: 
+//     4: 
+//     8: 
+//     16:,
+//     32:,
+//     64:,
+//     128: 
+//     256: 
+//     512: 
+//     1024:,
+//     2048:,
+//     4096:,
+//     8192:,
+//     16384:,
+//     32768:,
+//     65536:,
+//     131072: 
+// };
 
 
  /*----- app's state (variables) -----*/ 
@@ -16,6 +34,7 @@ const map = {
 //  winner - dont need
 //  board = a single array (maybe 2d arr)
 //random2
+//maybe create board through loops
 board = [
     [1,1,1,1],
     [1,1,1,1],
@@ -46,16 +65,23 @@ function init() {
     while (i<2){
     let num = randomCellGenerator();
     document.getElementById(`cell${num}`).textContent = 2;
-    i++}
+    i++ }
 }
 //can't decide if i choose a rnd from grid or rndRow and rndCol for board arr
 function randomCellGenerator() {
-    let rndCell = Math.floor(Math.random() * 16 );
-    return rndCell;
-
+    let rndRow = Math.floor(Math.random() * 5 );
+    console.log('rowidx '+ rndRow);
+    let rndCol = Math.floor(Math.random() * 5 );
+    if (!!board[rndRow][rndCol]) randomCellGenerator();
+    console.log(board[rndRow][rndCol])
+    //function that takes rndRow, rndCol 
+    //function UpdateBoard(rndRow,rndCol){
+        // board[rndRow][rndCol] = 2;
+    }
+    
 }
 
-
+// ROWINDEX * ROW[0].LENGTH = COLINDEX === CELL#
 
 //render()
 //when div is clicked, init()
