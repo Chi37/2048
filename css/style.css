@@ -19,5 +19,7 @@ body {
     border: solid whitesmoke 1px;
     border-radius: 1vmin;
     background-color: thistle;
+    height: 50px;
+    width: 50px;
 }
 

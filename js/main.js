@@ -6,25 +6,25 @@ const winningScore = 2048;
 
 
 //TODO: add colors
-// const mapColors =  {
-//     2: 
-//     4: 
-//     8: 
-//     16:,
-//     32:,
-//     64:,
-//     128: 
-//     256: 
-//     512: 
-//     1024:,
-//     2048:,
-//     4096:,
-//     8192:,
-//     16384:,
-//     32768:,
-//     65536:,
-//     131072: 
-// };
+const mapColors =  {
+    2: '#e1deff'
+    // 4: 
+    // 8: 
+    // 16:,
+    // 32:,
+    // 64:,
+    // 128: 
+    // 256: 
+    // 512: 
+    // 1024:,
+    // 2048:,
+    // 4096:,
+    // 8192:,
+    // 16384:,
+    // 32768:,
+    // 65536:,
+    // 131072: 
+};
 
 
  /*----- app's state (variables) -----*/ 
@@ -36,10 +36,7 @@ const winningScore = 2048;
 //random2
 //maybe create board through loops
 board = [
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0]
+   
 ]
 score = 0;
 
@@ -62,11 +59,18 @@ init();
 
 function init() {
     let i = 0
+   
+    for (let i=0; i<=4; i++){
+        board.push([0,0,0,0])
+    }
+
     while (i<2){
     let num = randomCellGenerator();
     console.log(num + ' num')
     document.getElementById(`cell${num}`).textContent = 2;
+    document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ; //mapColor[2]
     i++ }
+
 }
 //can't decide if i choose a rnd from grid or rndRow and rndCol for board arr
 function randomCellGenerator() {
@@ -79,8 +83,37 @@ function randomCellGenerator() {
         !!board[rndRow][rndCol])
     board[rndRow][rndCol] = 2;
     return rndRow * 4 + rndCol
-    
 }
+
+
+document.addEventListener('keydown', updateBoard);
+
+function updateBoard(e){
+    switch (e.keyCode) {
+        case 37: 
+            console.log('leftFunc')
+            break;
+        case 38: 
+            console.log('upFunc')
+            break;
+        case 39: 
+            console.log('rightFunc')
+            break;
+        case 40: 
+            console.log('downFunc')
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+
+
+
+
+
 
 // function updateBoard(rndRow, rndCol, val){
 //     console.log(rndRow + ' updateboard row idx');
@@ -114,7 +147,7 @@ function randomCellGenerator() {
 
 
 
-// POSSIBLE SOLUTION FOR MOVING ITEMS
+// POSSIBLE SOLUTION FOR MOVING ITEMS [unshift for sliding to right]
 
 // arr = [0,1,1,0];
 // arr= [2,1,0,1]
