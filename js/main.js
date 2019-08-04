@@ -36,9 +36,9 @@ const winningScore = 2048;
 //random2
 //maybe create board through loops
 board = [
-    [1,1,1,1],
-    [1,1,1,1],
-    [1,1,1,0],
+    [0,0,0,0],
+    [0,0,0,0],
+    [0,0,0,0],
     [0,0,0,0]
 ]
 score = 0;
@@ -71,25 +71,21 @@ function init() {
 //can't decide if i choose a rnd from grid or rndRow and rndCol for board arr
 function randomCellGenerator() {
     let rndRow, rndCol, val;
-    do {rndRow = Math.floor(Math.random() * 4 );
-    rndCol = Math.floor(Math.random() * 4 );
-    console.log('rowidx '+ rndRow);
-    console.log('colidx '+ rndCol);
-    val = 2;
-    //if arr index is > 0 or truthy 
-    console.log(board[rndRow][rndCol])} 
-    
-    while (board[rndRow][rndCol] !==0)
-    // if (!!board[rndRow][rndCol]) randomCellGenerator();
-
+    do {
+        rndRow = Math.floor(Math.random() * 4 );
+        rndCol = Math.floor(Math.random() * 4 );
+    }
+    while (
+        !!board[rndRow][rndCol])
+    board[rndRow][rndCol] = 2;
     return rndRow * 4 + rndCol
     
 }
 
-function updateBoard(rndRow, rndCol, val){
-    console.log(rndRow + ' updateboard row idx');
-    board[rndRow][rndCol] = val;
-}
+// function updateBoard(rndRow, rndCol, val){
+//     console.log(rndRow + ' updateboard row idx');
+//     board[rndRow][rndCol] = val;
+// }
 
 // ROWINDEX * ROW[0].LENGTH = COLINDEX === CELL#
 
@@ -108,6 +104,29 @@ function updateBoard(rndRow, rndCol, val){
 //CALCULATE SCORES - loop through the array and add the digits; and set score to that
 //add that score in DOM to display
 
-document.addEventListener('keypress',function(e){
-    console.log(e)})
+// document.addEventListener('keypress',function(e){
+//     console.log(e)})
 
+// }
+
+
+
+
+
+
+// POSSIBLE SOLUTION FOR MOVING ITEMS
+
+// arr = [0,1,1,0];
+// arr= [2,1,0,1]
+// let newA
+// for (let i = 0; i<4; i++){
+//   let zeroes ;
+//   newA = arr.filter(val => val);
+//   zeroes = arr.length - newA.length;
+//   var z = 0;
+//   while( z<zeroes){
+//     console.log(newA.push(0));
+//     z++;
+//   }
+// console.log(newA)
+// }
