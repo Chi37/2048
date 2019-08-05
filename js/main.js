@@ -7,6 +7,7 @@ const winningScore = 2048;
 
 //TODO: add colors
 const mapColors =  {
+    0:'thistle',
     2: '#e1deff',
     4: 'red'
     // 8: 
@@ -37,7 +38,7 @@ const mapColors =  {
 /*----- cached element references -----*/
 //cache board arrays to look up the individual cells later and check if it is 0 
 
-let cell = document.getElementById(`cell${num}`) 
+let cell = document.getElementById('cell') 
     // .textContent = 2;
     // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ;
 
@@ -54,19 +55,19 @@ init();
 function init() {
     let i = 0
    
-    for (let i=0; i<=4; i++){
+    for (let i=0; i<4; i++){
         board.push([0,0,0,0])
     }
 
     while (i<2){
-    num = randomCellGenerator();
-    console.log(num + ' num')
-    document.getElementById(`cell${num}`).textContent = 2;
-    document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ; //mapColor[2]
+    randomCellGenerator();
+    // console.log(num + ' num');
+    // document.getElementById(`cell${num}`).textContent = 2;
+    // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ; //mapColor[2]
     i++ }
 
 }
-
+//randomGen doesn't return anything and should call render inside of it.
 
 function randomCellGenerator() {
     let rndRow, rndCol, val;
@@ -78,7 +79,8 @@ function randomCellGenerator() {
     while ( !!board[rndRow][rndCol] );
 
     board[rndRow][rndCol] = val;
-    return getBoardCell(rndRow, rndCol);
+    render();
+    // return getBoardCell(rndRow, rndCol);
 }
 
 
@@ -91,7 +93,9 @@ function updateBoard(e){
     switch (e.keyCode) {
         case 37: 
             console.log('leftFunc')
-            
+            slideL(board);
+            combineR(board);
+            slideL(board);
             break;
         case 38: 
             console.log('upFunc')
@@ -112,23 +116,15 @@ function updateBoard(e){
 
 function render(){
     board.forEach(row => {
-        row.forEach(cell => {
-            let num = getBoardCell(board.indexOf(row),row.indexOf(cell));
-            console.log(num)
-            document.getElementById(`cell${num}`).textContent = cell;
-            document.getElementById(`cell${num}`).style.backgroundColor = mapColors[cell]
-        });
-        
+        for (let i = 0; i< row.length; i++){
+            let num = getBoardCell(board.indexOf(row),i);
+            document.getElementById(`cell${num}`).textContent = row[i];
+            document.getElementById(`cell${num}`).style.backgroundColor = mapColors[row[i]];
+        }
     });
 }
 
-
-
-
-
-
-
-    /* slide right */
+/* slide right */
 function slide(arr){
     for (let i = 0; i<board.length; i++){
         let zeroes = 0;
@@ -141,9 +137,44 @@ function slide(arr){
             }
         arr[i] = newA;
     }
+    combine(board);
+    randomCellGenerator();
+    console.table(board)
+
+    render();
 }
 
+/* slife left */
+function slideL(arr){
+    for (let i = 0; i<board.length; i++){
+        let zeroes = 0;
+        var z = 0;
+        newA = arr[i].filter(val => val);
+        zeroes = arr.length - newA.length;
+            while( z<zeroes){
+                newA.push(0); ///cb function here
+                z++;
+            }
+        arr[i] = newA;
+    }
+    combine(board);
+    randomCellGenerator();
+    console.table(board)
+    render();
+}
 
+function combineR(arr) {
+    for (let i = 0; i<4; i++){
+    
+      for (let j=3; j>=0;j--) {
+         if (board[i][j] === board[i][j-1]){
+           console.log(`at loop j${j} board is ${board}`);
+          board[i][j] *=2;
+          board[i][j-1] = 0;
+        }
+      }
+      }
+    }
 
 
 
@@ -209,21 +240,20 @@ function slide(arr){
 
 // board[0] = newA.arr
 
-// function combine(arr) {
-// for (let i = 0; i<4; i++){
-
-//   for (let j=i+1; j<4;j++) {
-//      if (arr[i] === arr[j] && !!arr[i] && !!arr[j]){
-//        console.log(`at loop j${j} arr is ${arr}`)
-//       let add = arr[j] + arr[j];
-//       arr[i] = add;
-//       arr[j] = 0;
-//       console.log(arr)
-//     }
-//   }
-// }
-
-// }
+function combine(arr) {
+   
+for (let i = 0; i<4; i++){
+    for (let j=i+1; j<4;j++) {
+        if (board[i] === board[j] && !!board[i] && !!board[j]){
+            console.log(j)
+       console.log(`at loop j${j} board is ${board}`)
+      let add = board[j] + board[j];
+      board[i] = add;
+      board[j] = 0;
+    }
+  }
+}
+}
 // function combineR(arr) {
 // for (let i = 0; i<4; i++){
 
