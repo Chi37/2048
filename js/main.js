@@ -7,8 +7,8 @@ const winningScore = 2048;
 
 //TODO: add colors
 const mapColors =  {
-    2: '#e1deff'
-    // 4: 
+    2: '#e1deff',
+    4: 'red'
     // 8: 
     // 16:,
     // 32:,
@@ -28,34 +28,28 @@ const mapColors =  {
 
 
  /*----- app's state (variables) -----*/ 
- let score, board, randomTwoTile
+ let score, board, randomTwoTile, num
 
-//  score
-//  winner - dont need
-//  board = a single array (maybe 2d arr)
-//random2
-//maybe create board through loops
-board = [
-   
-]
-score = 0;
+    board = [];
+    score = 0;
 
 
 /*----- cached element references -----*/
 //cache board arrays to look up the individual cells later and check if it is 0 
-//refer to render ^^^
-//global scope var that you have access too
-let cell = document.querySelector('cell');
+
+let cell = document.getElementById(`cell${num}`)
+    // .textContent = 2;
+    // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ;
 
 /*----- event listeners -----*/ 
-//on click to start game within game div
-// listen to arrows r,l,u,d and then trigger function
+document.addEventListener('keydown', updateBoard);
+
+// TODO:
+
+//add reset button. On click call init
 
 /*----- functions -----*/
 init();
-
-// init() set up board 4x4 with all values set at 0
-    //randomly pick two cells and set that to 2
 
 function init() {
     let i = 0
@@ -65,28 +59,33 @@ function init() {
     }
 
     while (i<2){
-    let num = randomCellGenerator();
+    num = randomCellGenerator();
     console.log(num + ' num')
     document.getElementById(`cell${num}`).textContent = 2;
     document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ; //mapColor[2]
     i++ }
 
 }
-//can't decide if i choose a rnd from grid or rndRow and rndCol for board arr
+
+
 function randomCellGenerator() {
     let rndRow, rndCol, val;
+    val = 2;
     do {
         rndRow = Math.floor(Math.random() * 4 );
         rndCol = Math.floor(Math.random() * 4 );
     }
-    while (
-        !!board[rndRow][rndCol])
-    board[rndRow][rndCol] = 2;
-    return rndRow * 4 + rndCol
+    while ( !!board[rndRow][rndCol] );
+
+    board[rndRow][rndCol] = val;
+    return getBoardCell(rndRow, rndCol);
 }
 
 
-document.addEventListener('keydown', updateBoard);
+//algorthm for which cell to update in DOM based on row and column indices
+function getBoardCell(row,col){
+    return row * 4 + col;
+}
 
 function updateBoard(e){
     switch (e.keyCode) {
@@ -107,11 +106,36 @@ function updateBoard(e){
     }
 }
 
+// board = [[4,2,0,0],[0,4,2,0]]
+
+function render(){
+    board.forEach(row => {
+        row.forEach(cell => {
+            let num = getBoardCell(board.indexOf(row),row.indexOf(cell));
+            console.log(num)
+            document.getElementById(`cell${num}`).textContent = cell;
+            document.getElementById(`cell${num}`).style.backgroundColor = mapColors[cell]
+        });
+        
+    });
+}
 
 
 
 
 
+
+function moveRight(matrix){
+
+}
+
+function slide(){
+
+}
+
+function combine(){
+    
+}
 
 
 
@@ -150,16 +174,57 @@ function updateBoard(e){
 // POSSIBLE SOLUTION FOR MOVING ITEMS [unshift for sliding to right]
 
 // arr = [0,1,1,0];
-// arr= [2,1,0,1]
-// let newA
+// arr= [[2,1,0,1],
+//       [1,0,1,0],
+//       [1,0,1,0],
+//       [0,1,1,1]]
+
+// let newA;
+// function slide(arr){
 // for (let i = 0; i<4; i++){
 //   let zeroes ;
-//   newA = arr.filter(val => val);
+//   newA = arr[i].filter(val => val);
 //   zeroes = arr.length - newA.length;
 //   var z = 0;
 //   while( z<zeroes){
-//     console.log(newA.push(0));
+//     newA.push(0);
 //     z++;
 //   }
-// console.log(newA)
+// arr[i] = newA;
 // }
+// }
+//slide,combine,slide Left push
+// board = [[0,0,0,0],[0,0,0,0]];
+
+// board[0] = newA.arr
+
+// function combine(arr) {
+// for (let i = 0; i<4; i++){
+
+//   for (let j=i+1; j<4;j++) {
+//      if (arr[i] === arr[j] && !!arr[i] && !!arr[j]){
+//        console.log(`at loop j${j} arr is ${arr}`)
+//       let add = arr[j] + arr[j];
+//       arr[i] = add;
+//       arr[j] = 0;
+//       console.log(arr)
+//     }
+//   }
+// }
+
+// }
+// function combineR(arr) {
+// for (let i = 0; i<4; i++){
+
+//   for (let j=3; j>=0;j--) {
+//      if (arr[i][j] === arr[i][j-1]){
+//        console.log(`at loop j${j} arr is ${arr}`);
+//       arr[i][j] *=2;
+//       arr[i][j-1] = 0;
+//     }
+//   }
+// }
+
+// }
+
+// arr.forEach(slide);
