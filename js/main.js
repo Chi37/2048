@@ -37,7 +37,7 @@ const mapColors =  {
 /*----- cached element references -----*/
 //cache board arrays to look up the individual cells later and check if it is 0 
 
-let cell = document.getElementById(`cell${num}`)
+let cell = document.getElementById(`cell${num}`) 
     // .textContent = 2;
     // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ;
 
@@ -91,12 +91,14 @@ function updateBoard(e){
     switch (e.keyCode) {
         case 37: 
             console.log('leftFunc')
+            
             break;
         case 38: 
             console.log('upFunc')
             break;
         case 39: 
             console.log('rightFunc')
+            slide(board);
             break;
         case 40: 
             console.log('downFunc')
@@ -125,17 +127,23 @@ function render(){
 
 
 
-function moveRight(matrix){
 
+    /* slide right */
+function slide(arr){
+    for (let i = 0; i<board.length; i++){
+        let zeroes = 0;
+        var z = 0;
+        newA = arr[i].filter(val => val);
+        zeroes = arr.length - newA.length;
+            while( z<zeroes){
+                newA.unshift(0); ///cb function here
+                z++;
+            }
+        arr[i] = newA;
+    }
 }
 
-function slide(){
 
-}
-
-function combine(){
-    
-}
 
 
 
@@ -171,28 +179,31 @@ function combine(){
 
 
 
-// POSSIBLE SOLUTION FOR MOVING ITEMS [unshift for sliding to right]
 
-// arr = [0,1,1,0];
-// arr= [[2,1,0,1],
-//       [1,0,1,0],
-//       [1,0,1,0],
-//       [0,1,1,1]]
+// ******** Trying to refactor and make two callback functions for slide higher order function ********* //
 
-// let newA;
-// function slide(arr){
-// for (let i = 0; i<4; i++){
-//   let zeroes ;
-//   newA = arr[i].filter(val => val);
-//   zeroes = arr.length - newA.length;
-//   var z = 0;
-//   while( z<zeroes){
-//     newA.push(0);
-//     z++;
-//   }
-// arr[i] = newA;
-// }
-// }
+// var push = (arr,num = 0) => arr.push(num);
+// var unshift = (arr, num = 0) => arr.unshift(0);
+/* ------------------ */
+
+
+
+/* SLIDE RIGHT */
+/* function slide(arr){
+    for (let i = 0; i<board.length; i++){
+        let zeroes = 0;
+        var z = 0;
+        newA = arr[i].filter(val => val);
+        zeroes = arr.length - newA.length;
+            while( z<zeroes){
+                newA.push(0); ///cb function here
+                z++;
+            }
+        arr[i] = newA;
+    }
+} */
+
+
 //slide,combine,slide Left push
 // board = [[0,0,0,0],[0,0,0,0]];
 
