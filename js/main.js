@@ -116,6 +116,7 @@ function render(){
             document.getElementById(`cell${num}`).style.backgroundColor = mapColors[row[i]];
         }
     });
+    document.querySelector('h3').textContent = `Score: ${score}`;
 }
 
 /** TODO: refactor slide code below to maybe HOH function with callback */
@@ -159,8 +160,9 @@ function combineR(arr) {
       for (let j=3; j>=0;j--) {
          if (board[i][j] === board[i][j-1]){
         //    console.log(`at loop j${j} board is ${board}`);
-          board[i][j] *=2;
+          let add = board[i][j] *=2;
           board[i][j-1] = 0;
+          score += add;
         }
       }
       }
@@ -175,6 +177,7 @@ function combine() {
                 let add = board[j] + board[j];
                 board[i] = add;
                 board[j] = 0;
+                score += add;
             }
         }
     }
