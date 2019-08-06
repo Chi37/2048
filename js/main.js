@@ -20,7 +20,7 @@ const mapColors =  {
 };
 
  /*----- app's state (variables) -----*/ 
- let score, board, randomTwoTile, num
+ let score, board, randomTwoTile, num, gameEnd
 
     board = [];
     score;
@@ -84,23 +84,25 @@ function updateBoard(e){
             slideL(board);
             randomCellGenerator();
             break;
-        case 38: 
-            console.log('upFunc')
+        case 38: //up
+            rotate(board);
+            slide(board);
+            rotate(board);rotate(board);rotate(board);
+            combine(board);
             break;
         case 39: 
             console.log('rightFunc')
             slide(board);
             combineR(board);
             slide(board);
-        //     let count = canMove(board); 
-        //     if(count > 0){
-        //         console.log(count);
             randomCellGenerator();
-        // } else {alert('cant move left')}
-            // randomCellGenerator();
             break;
         case 40: 
             console.log('downFunc')
+            rotate(board);
+            slideL(board);
+            rotate(board);rotate(board);rotate(board);
+            combineR(board);
             break;
         default:
             break;
@@ -181,9 +183,34 @@ function combine() {
             }
         }
     }
+    
     render();
+    if (checkEndGame()) return;
 }
 
+
+
+function rotate(board) {
+    let n = board.length;
+    let x = Math.floor(n/ 2);
+    let y = n - 1; //highest index 
+    for (let i = 0; i < x; i++) {
+       for (let j = i; j < y - i; j++) {
+          k = board[i][j];
+          board[i][j] = board[y - j][i];
+          board[y - j][i] = board[y - i][y - j];
+          board[y - i][y - j] = board[j][y - i]
+          board[j][y - i] = k
+       }
+    }
+  }
+
+  function reverse(){
+      board.forEach(row=>{
+          row.reverse();
+      });
+      render();
+  }
 
 
 /** CHECKER NOT WORKING FOR STOPPING RANDOMECELLGEN FROM INVOKIG WHEN YOU AREN'T ALLOWED TO MOVE ONE DIRECTION OR NOT */
@@ -218,4 +245,15 @@ function combine() {
 /* ------------------ */
 
 
+
+//check end of game after combine
+function checkEndGame(){
+    for (let i = 0; i < board.length; i++){
+        for (let j = 0; j< board[0].length; j++){
+            gameEnd = !board[i][j]? false :true;
+           
+        };
+    }
+    return gameEnd;
+};
 
