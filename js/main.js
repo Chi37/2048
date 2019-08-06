@@ -78,7 +78,7 @@ function getBoardCell(row,col){
 
 function updateBoard(e){
     switch (e.keyCode) {
-        case 37: 
+        case 37: //left 
             slideL(board);
             combineR(board);
             slideL(board);
@@ -87,22 +87,22 @@ function updateBoard(e){
         case 38: //up
             rotate(board);
             slide(board);
+            combineR(board);
+            slide(board);
             rotate(board);rotate(board);rotate(board);
-            combine(board);
             break;
-        case 39: 
-            console.log('rightFunc')
+        case 39: //right
             slide(board);
             combineR(board);
             slide(board);
             randomCellGenerator();
             break;
-        case 40: 
-            console.log('downFunc')
+        case 40: //down
             rotate(board);
             slideL(board);
-            rotate(board);rotate(board);rotate(board);
             combineR(board);
+            slideL(board);
+            rotate(board);rotate(board);rotate(board);
             break;
         default:
             break;
@@ -161,7 +161,6 @@ function combineR(arr) {
     
       for (let j=3; j>=0;j--) {
          if (board[i][j] === board[i][j-1]){
-        //    console.log(`at loop j${j} board is ${board}`);
           let add = board[i][j] *=2;
           board[i][j-1] = 0;
           score += add;
@@ -169,7 +168,6 @@ function combineR(arr) {
       }
       }
       render();
-    //   return canMove(board);
     }
     
 function combine() {
@@ -180,6 +178,7 @@ function combine() {
                 board[i] = add;
                 board[j] = 0;
                 score += add;
+                
             }
         }
     }
@@ -203,6 +202,7 @@ function rotate(board) {
           board[j][y - i] = k
        }
     }
+    render();
   }
 
   function reverse(){
@@ -213,7 +213,7 @@ function rotate(board) {
   }
 
 
-/** CHECKER NOT WORKING FOR STOPPING RANDOMECELLGEN FROM INVOKIG WHEN YOU AREN'T ALLOWED TO MOVE ONE DIRECTION OR NOT */
+/** TODO: CanMove CHECKER */
 
 // function canMove (arr){
 //     let c = 0;
@@ -228,20 +228,11 @@ function rotate(board) {
     
 
 
-
-/** TODO: ADD SCORES LOGICE */
-//CALCULATE SCORES - loop through the array and add the digits; and set score to that
-//add that score in DOM to display
-
-
-
-
-
-
 // ********  Trying to refactor and make two callback functions for slide higher order function ********* //
+    // var push = (arr,num = 0) => arr.push(num);
+    // var unshift = (arr, num = 0) => arr.unshift(0);
 
-// var push = (arr,num = 0) => arr.push(num);
-// var unshift = (arr, num = 0) => arr.unshift(0);
+
 /* ------------------ */
 
 
@@ -256,4 +247,25 @@ function checkEndGame(){
     }
     return gameEnd;
 };
+
+
+
+
+
+/** 
+ * 
+ * let rowAdj = board[0].some((el, idx) => {
+    return el === board[idx + 1];
+    });
+
+ */
+
+let rowAdj = 
+    board.forEach(row => {
+        row.some((el, idx) => {
+        if(row[idx+1] === 0){ return true }
+        return el === row[idx + 1];
+        });
+    });
+
 
