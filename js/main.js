@@ -1,38 +1,29 @@
 /*----- constants -----*/
 
-//maybe object of all the numbers so you can insert into dom element
-//I went to places i couldn't go. like security alerts bc sites didn't have the green lock
 const winningScore = 2048;
 
 
-//TODO: add colors
 const mapColors =  {
     0:'thistle',
     2: '#e1deff',
-    4: 'red'
-    // 8: 
-    // 16:,
-    // 32:,
-    // 64:,
-    // 128: 
-    // 256: 
-    // 512: 
-    // 1024:,
-    // 2048:,
-    // 4096:,
-    // 8192:,
-    // 16384:,
-    // 32768:,
-    // 65536:,
-    // 131072: 
-};
+    4: '#c4bdff',
+    8: '#6d5cff',
+    16:'#4e3fd1',
+    32:'#342a8c',
+    64:'#ff7f5c',
+    128: '#ff997c',
+    256: '#ffbfad',
+    512: '#ff5b2e',
+    1024: 'redorange',
+    2048: 'goldenrod',
 
+};
 
  /*----- app's state (variables) -----*/ 
  let score, board, randomTwoTile, num
 
     board = [];
-    score = 0;
+    score;
 
 
 /*----- cached element references -----*/
@@ -53,7 +44,8 @@ document.addEventListener('keydown', updateBoard);
 init();
 
 function init() {
-    let i = 0
+    score = 0;
+    let i = 0;
    
     for (let i=0; i<4; i++){
         board.push([0,0,0,0])
@@ -61,13 +53,10 @@ function init() {
 
     while (i<2){
     randomCellGenerator();
-    // console.log(num + ' num');
-    // document.getElementById(`cell${num}`).textContent = 2;
-    // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ; //mapColor[2]
     i++ }
 
 }
-//randomGen doesn't return anything and should call render inside of it.
+
 
 function randomCellGenerator() {
     let rndRow, rndCol, val;
@@ -80,9 +69,7 @@ function randomCellGenerator() {
 
     board[rndRow][rndCol] = val;
     render();
-    // return getBoardCell(rndRow, rndCol);
 }
-
 
 //algorthm for which cell to update in DOM based on row and column indices
 function getBoardCell(row,col){
@@ -92,10 +79,10 @@ function getBoardCell(row,col){
 function updateBoard(e){
     switch (e.keyCode) {
         case 37: 
-            console.log('leftFunc')
             slideL(board);
             combineR(board);
             slideL(board);
+            randomCellGenerator();
             break;
         case 38: 
             console.log('upFunc')
@@ -103,6 +90,14 @@ function updateBoard(e){
         case 39: 
             console.log('rightFunc')
             slide(board);
+            combineR(board);
+            slide(board);
+        //     let count = canMove(board); 
+        //     if(count > 0){
+        //         console.log(count);
+            randomCellGenerator();
+        // } else {alert('cant move left')}
+            // randomCellGenerator();
             break;
         case 40: 
             console.log('downFunc')
@@ -112,9 +107,8 @@ function updateBoard(e){
     }
 }
 
-// board = [[4,2,0,0],[0,4,2,0]]
-
 function render(){
+    // randomCellGenerator();
     board.forEach(row => {
         for (let i = 0; i< row.length; i++){
             let num = getBoardCell(board.indexOf(row),i);
@@ -123,6 +117,8 @@ function render(){
         }
     });
 }
+
+/** TODO: refactor slide code below to maybe HOH function with callback */
 
 /* slide right */
 function slide(arr){
@@ -137,14 +133,11 @@ function slide(arr){
             }
         arr[i] = newA;
     }
-    combine(board);
-    randomCellGenerator();
-    console.table(board)
-
     render();
 }
 
-/* slife left */
+
+/* slide left */
 function slideL(arr){
     for (let i = 0; i<board.length; i++){
         let zeroes = 0;
@@ -157,9 +150,6 @@ function slideL(arr){
             }
         arr[i] = newA;
     }
-    combine(board);
-    randomCellGenerator();
-    console.table(board)
     render();
 }
 
@@ -168,50 +158,57 @@ function combineR(arr) {
     
       for (let j=3; j>=0;j--) {
          if (board[i][j] === board[i][j-1]){
-           console.log(`at loop j${j} board is ${board}`);
+        //    console.log(`at loop j${j} board is ${board}`);
           board[i][j] *=2;
           board[i][j-1] = 0;
         }
       }
       }
+      render();
+    //   return canMove(board);
     }
+    
+function combine() {
+    for (let i = 0; i<4; i++){
+        for (let j=i+1; j<4;j++) {
+            if (board[i] === board[j] && !!board[i] && !!board[j]){
+                let add = board[j] + board[j];
+                board[i] = add;
+                board[j] = 0;
+            }
+        }
+    }
+    render();
+}
 
 
 
-// function updateBoard(rndRow, rndCol, val){
-//     console.log(rndRow + ' updateboard row idx');
-//     board[rndRow][rndCol] = val;
-// }
+/** CHECKER NOT WORKING FOR STOPPING RANDOMECELLGEN FROM INVOKIG WHEN YOU AREN'T ALLOWED TO MOVE ONE DIRECTION OR NOT */
 
-// ROWINDEX * ROW[0].LENGTH = COLINDEX === CELL#
-
-//render()
-//when div is clicked, init()
-//when arrow is pressed.... 
-    //FIGURE ALGORITHM LOL
-    //rightArrow function, left,up,down functions
-        //loop through array, or maybe loop through certain arrays and check
-        //if values at indices are 0 vs diff # vs same #
-//Add values function - add values IF the 2 cells are same 
-
-//within the functions l,r,u,d call calculateScore();
+// function canMove (arr){
+//     let c = 0;
+//     arr.forEach(row => { 
+//         if ((!!row[3] && !!row[2] && !!row[1] && !!row[0]) ||// 1111
+//             (!row[3] && !row[2] && !!row[1] && !!row[0]) || //0011
+//             (!row[3] && !row[2] && !row[1] && !!row[0])  //0001
+//         || (!row[3] && !!row[2] && !!row[1] && !!row[0])) {c++} //0111
+//         }) 
+//     return c;
+//     }
+    
 
 
+
+/** TODO: ADD SCORES LOGICE */
 //CALCULATE SCORES - loop through the array and add the digits; and set score to that
 //add that score in DOM to display
 
-// document.addEventListener('keypress',function(e){
-//     console.log(e)})
-
-// }
 
 
 
 
 
-
-
-// ******** Trying to refactor and make two callback functions for slide higher order function ********* //
+// ********  Trying to refactor and make two callback functions for slide higher order function ********* //
 
 // var push = (arr,num = 0) => arr.push(num);
 // var unshift = (arr, num = 0) => arr.unshift(0);
@@ -219,53 +216,3 @@ function combineR(arr) {
 
 
 
-/* SLIDE RIGHT */
-/* function slide(arr){
-    for (let i = 0; i<board.length; i++){
-        let zeroes = 0;
-        var z = 0;
-        newA = arr[i].filter(val => val);
-        zeroes = arr.length - newA.length;
-            while( z<zeroes){
-                newA.push(0); ///cb function here
-                z++;
-            }
-        arr[i] = newA;
-    }
-} */
-
-
-//slide,combine,slide Left push
-// board = [[0,0,0,0],[0,0,0,0]];
-
-// board[0] = newA.arr
-
-function combine(arr) {
-   
-for (let i = 0; i<4; i++){
-    for (let j=i+1; j<4;j++) {
-        if (board[i] === board[j] && !!board[i] && !!board[j]){
-            console.log(j)
-       console.log(`at loop j${j} board is ${board}`)
-      let add = board[j] + board[j];
-      board[i] = add;
-      board[j] = 0;
-    }
-  }
-}
-}
-// function combineR(arr) {
-// for (let i = 0; i<4; i++){
-
-//   for (let j=3; j>=0;j--) {
-//      if (arr[i][j] === arr[i][j-1]){
-//        console.log(`at loop j${j} arr is ${arr}`);
-//       arr[i][j] *=2;
-//       arr[i][j-1] = 0;
-//     }
-//   }
-// }
-
-// }
-
-// arr.forEach(slide);
