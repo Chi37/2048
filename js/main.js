@@ -144,6 +144,7 @@ function executeRightArrow(){
  function executeDownArrow(){  
 
      rotate(board);
+     console.table(board)
      canMove = canMoveLeftOrDown();
      if(!canMove){
          rotate(board);rotate(board);rotate(board);
@@ -154,6 +155,10 @@ function executeRightArrow(){
      slideL(board);
      rotate(board);rotate(board);rotate(board);
      randomCellGenerator();
+}
+
+function checkEndGame() {
+    //if each row does not return null and canMove functions are false
 }
 
 
@@ -249,23 +254,22 @@ function rotate(board) {
 
 
 //check end of game after combine
-// function checkEndGame(){
-//     for (let i = 0; i < board.length; i++){
-//         for (let j = 0; j< board[0].length; j++){
-//             gameEnd = !board[i][j]? false :true;
+function checkEndGame(){
+    let canMoveLD, canMoveRU
+    canMoveLD = canMoveLeftOrDown();
+    canMoveRU = canMoveRightOrUp();
+    if((!canMoveLD) && (!canMoveRU) ) {
+        alert('No more Moves')
+    }
+    // for (let i = 0; i < board.length; i++){
+    //     for (let j = 0; j< board[0].length; j++){
+    //         gameEnd = !board[i][j] ? false : true;
            
-//         };
-//     }
-//     return gameEnd;
-// };
-
-
-//check each board row and check each cell of row to see if tiles can move in given direction
+    //     };
+    };
  
 
 
-
-  
 
   
  function canMoveLeftOrDown (){
@@ -294,7 +298,6 @@ let canMove = board.some(row => {
     let sawNum = false;
     return row.some(val => {
       if (val) {
-          console.log(val)
         sawNum = true;
         return false;
       } else if (sawNum) {
@@ -304,6 +307,6 @@ let canMove = board.some(row => {
       }
     });
   });
-  return canMove
+  return canMove;
 }
   

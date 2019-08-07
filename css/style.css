@@ -28,10 +28,12 @@ body {
     
 }
 
+
 .container {
    display: grid;
    justify-content: center;
-   grid-template-columns: auto 40px auto;
+   grid-template-columns: auto 30px auto ;
+  
 
 }
 
