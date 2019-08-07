@@ -9,22 +9,29 @@ body {
 .grid-container {
     display: grid;
     grid-template-columns: auto auto auto auto;
-    grid-template-rows: 50px 50x 50px 50x; 
+    grid-template-rows: auto auto auto auto; 
     justify-content: center;
     text-align: center;
     font-size: 40px;
-    color: coral;
-    
+    color:blanchedalmond;
+    border: 10px solid whitesmoke;
+    border-radius: 6px;
 }
 
 .el {
     padding: 40px;
     text-align: center;
-    border: solid whitesmoke 1px;
-    border-radius: 1vmin;
+    border: solid whitesmoke 2px;
     background-color: thistle;
     height: 50px;
     width: 50px;
     
+}
+
+.container {
+   display: grid;
+   justify-content: center;
+   grid-template-columns: auto 40px auto;
+
 }
 
