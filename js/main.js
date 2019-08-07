@@ -18,7 +18,7 @@ const mapColors =  {
 };
 
  /*----- app's state (variables) -----*/ 
- let score, board, num, gameEnd
+ let score, board, num, gameEnd 
 
     board = [];
     score;
@@ -53,24 +53,6 @@ function init() {
     i++ }
 
 }
-
-
-let canMoveRight = board.some(row => {
-  // check if two adjacent non-zero values
-  if (row.some((val, idx) => val && val === row[idx + 1])) return true;
-  // check if zero is good
-  let sawNum = false;
-  return row.some(val => {
-    if (val) {
-      sawNum = true;
-      return false;
-    } else if (sawNum) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-});
 
 //generate a random two on a tile that is null
 function randomCellGenerator() {
@@ -123,34 +105,55 @@ function render(){
 
 //R,L,U,D methods
 function executeRightArrow(){
+    canMove = canMoveRightOrUp();
+    if(!canMove){return};
     slide(board);
     combineR(board);
     slide(board);
+    randomCellGenerator();
     render();
-    if(canMoveRight){randomCellGenerator()}
+
 }
 
  function executeLeftArrow(){
+ 
+    canMove = canMoveLeftOrDown();
+    if(!canMove){return};
     slideL(board);
     combine();
     slideL(board);
+    randomCellGenerator();
     render();
 }
 
  function executeUpArrow(){
+
     rotate(board);
+    canMove = canMoveRightOrUp();
+    if(!canMove){
+        rotate(board);rotate(board);rotate(board);
+        return;
+        };
     slide(board);
     combineR(board);
     slide(board);
     rotate(board);rotate(board);rotate(board);
+    randomCellGenerator();
 }
 
- function executeDownArrow(){            
-    rotate(board);
-    slideL(board);
-    combine(board);
-    slideL(board);
-    rotate(board);rotate(board);rotate(board);
+ function executeDownArrow(){  
+
+     rotate(board);
+     canMove = canMoveLeftOrDown();
+     if(!canMove){
+         rotate(board);rotate(board);rotate(board);
+         return;
+        }
+     slideL(board);
+     combine(board);
+     slideL(board);
+     rotate(board);rotate(board);rotate(board);
+     randomCellGenerator();
 }
 
 
@@ -263,19 +266,44 @@ function rotate(board) {
 
 
   
-//   let canMoveLeft = board.some(row => {
-//     // check if two adjacent non-zero values
-//     if (row.some((val, idx) => val && val === row[idx + 1])) return true;
-//     // check if zero is good
-//     let sawNum = false;
-//     for (let i = 3; i > 0; i--) {
-//       if (row[i]) {
-//         sawNum = true;
-//       } else if (sawNum) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   });
+
   
-//   console.log(canMoveRight, canMoveLeft)
+ function canMoveLeftOrDown (){
+    let canMove = board.some(row => {
+        // check if two adjacent non-zero values
+        if (row.some((val, idx) => val && val === row[idx + 1])) return true;
+        // check if zero is good
+        let sawNum = false;
+        for (let i = 3; i > 0; i--) {
+          if (row[i]) {
+            sawNum = true;
+          } else if (sawNum) {
+            return true;
+          }
+        }
+        return false;
+      });
+      return canMove;
+ }
+
+function canMoveRightOrUp (){
+let canMove = board.some(row => {
+    // check if two adjacent non-zero values
+    if (row.some((val, idx) => val && val === row[idx + 1])) return true;
+    // check if null is good
+    let sawNum = false;
+    return row.some(val => {
+      if (val) {
+          console.log(val)
+        sawNum = true;
+        return false;
+      } else if (sawNum) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  });
+  return canMove
+}
+  
