@@ -4,7 +4,7 @@ const winningScore = 2048;
 
 
 const mapColors =  {
-    0:'thistle',
+    null:'thistle',
     2: '#e1deff',
     4: '#c4bdff',
     8: '#6d5cff',
@@ -29,9 +29,8 @@ const mapColors =  {
 /*----- cached element references -----*/
 //cache board arrays to look up the individual cells later and check if it is 0 
 
-let cell = document.getElementById('cell') 
-    // .textContent = 2;
-    // document.getElementById(`cell${num}`).style.backgroundColor = mapColors[2] ;
+let cell = document.querySelectorAll('el') 
+//  var idx = parseInt(evt.target.id.replace('sq', ''));
 
 /*----- event listeners -----*/ 
 document.addEventListener('keydown', updateBoard);
@@ -48,7 +47,7 @@ function init() {
     let i = 0;
    
     for (let i=0; i<4; i++){
-        board.push([0,0,0,0])
+        board.push([null,null,null,null])
     }
 
     while (i<2){
@@ -80,7 +79,7 @@ function updateBoard(e){
     switch (e.keyCode) {
         case 37: //left 
             slideL(board);
-            combineR(board);
+            combine();
             slideL(board);
             randomCellGenerator();
             break;
@@ -100,7 +99,7 @@ function updateBoard(e){
         case 40: //down
             rotate(board);
             slideL(board);
-            combineR(board);
+            combine(board);
             slideL(board);
             rotate(board);rotate(board);rotate(board);
             break;
@@ -123,16 +122,16 @@ function render(){
 
 /** TODO: refactor slide code below to maybe HOH function with callback */
 
-/* slide right */
+/* slide right  filter truthy values and find out how many 0's are in arr*/
 function slide(arr){
     for (let i = 0; i<board.length; i++){
         let zeroes = 0;
-        var z = 0;
+        var counter = 0;
         newA = arr[i].filter(val => val);
         zeroes = arr.length - newA.length;
-            while( z<zeroes){
-                newA.unshift(0); ///cb function here
-                z++;
+            while( counter <zeroes){
+                newA.unshift(null); ///cb function here
+                counter++;
             }
         arr[i] = newA;
     }
@@ -144,21 +143,20 @@ function slide(arr){
 function slideL(arr){
     for (let i = 0; i<board.length; i++){
         let zeroes = 0;
-        var z = 0;
+        var counter= 0;
         newA = arr[i].filter(val => val);
         zeroes = arr.length - newA.length;
-            while( z<zeroes){
-                newA.push(0); ///cb function here
-                z++;
+            while( counter <zeroes){
+                newA.push(null); ///cb function here
+                counter++;
             }
         arr[i] = newA;
     }
     render();
 }
 
-function combineR(arr) {
+function combineR() {
     for (let i = 0; i<4; i++){
-    
       for (let j=3; j>=0;j--) {
          if (board[i][j] === board[i][j-1]){
           let add = board[i][j] *=2;
@@ -172,11 +170,10 @@ function combineR(arr) {
     
 function combine() {
     for (let i = 0; i<4; i++){
-        for (let j=i+1; j<4;j++) {
-            if (board[i] === board[j] && !!board[i] && !!board[j]){
-                let add = board[j] + board[j];
-                board[i] = add;
-                board[j] = 0;
+        for (let j=0; j<4;j++) {
+            if (board[i][j] === board[i][j+1] && !!board[i] && !!board[j]){
+                let add = board[i][j] *=2;
+                board[i][j+1] =0;
                 score += add;
                 
             }
@@ -184,8 +181,7 @@ function combine() {
     }
     
     render();
-    if (checkEndGame()) return;
-}
+};
 
 
 
@@ -269,3 +265,6 @@ let rowAdj =
     });
 
 
+
+
+// TODO: DOWN FUNCTION ISN'T PLACING NUM CORRECTLY
