@@ -136,6 +136,7 @@ function executeRightArrow(){
     canMove = canMoveRightOrUp(board);
     if(!canMove){
         rotate(board);rotate(board);rotate(board);
+        render();
         return;
         };
     slide(board);
@@ -143,6 +144,7 @@ function executeRightArrow(){
     slide(board);
     rotate(board);rotate(board);rotate(board);
     randomCellGenerator();
+    render();
 }
 
  function executeDownArrow(){  
@@ -152,6 +154,7 @@ function executeRightArrow(){
      console.log(canMoveL)
      if(!canMoveL){
          rotate(board);rotate(board);rotate(board);
+         render();
          return;
         }
      slideL(board);
@@ -159,6 +162,7 @@ function executeRightArrow(){
      slideL(board);
      rotate(board);rotate(board);rotate(board);
      randomCellGenerator();
+     render();
 }
 
 /** TODO: refactor slide code below to maybe HOH function with callback */
@@ -225,6 +229,7 @@ function combine() {
 
 
 function rotate(board) {
+    console.log(board)
     let n = board.length;
     let x = Math.floor(n/ 2); //loop depending on size of matrix
     let y = n - 1; //highest index 
@@ -237,7 +242,8 @@ function rotate(board) {
           board[j][y - i] = k
        }
     }
-    render();
+    // render();
+    console.log(board)
   }
 
 
@@ -252,16 +258,24 @@ function rotate(board) {
 
 
 // check end of game after combine
-function checkEndGame(b){
-    canMoveD = canMoveLeftOrDown(board);
-    canMoveU =canMoveRightOrUp(board);
-    canMoveL = canMoveLeftOrDown(board);
-    canMoveR = canMoveRightOrUp(board);
+function checkEndGame(){
+    var copyArr = [];
+    board.forEach(function(each){
+        copyArr.push(each);
+    })
+    
+    console.table(copyArr)
+    rotate(copyArr);
+    canMoveD = canMoveLeftOrDown(copyArr);
+    canMoveU =canMoveRightOrUp(copyArr);
+    rotate(copyArr);rotate(copyArr);rotate(copyArr);
+    canMoveL = canMoveLeftOrDown(copyArr);
+    canMoveR = canMoveRightOrUp(copyArr);
 
     if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD) ) {
         return true;
     }
-    console.log(canMoveL, canMoveD,canMoveR, canMoveU)
+    // console.log(canMoveL, canMoveD,canMoveR, canMoveU)
 };
    
  function canMoveLeftOrDown (board){
@@ -273,12 +287,14 @@ function checkEndGame(b){
         // check if zero is good
         let sawNum = false;
         for (let i = 3; i > 0; i--) {
+           if(!row[0]) return true; 
           if (row[i]) {
             sawNum = true;
           } else if (sawNum) {
             return true;
           }
         }
+        console.log(`false ${sawNum}`)
         return false;
       });
       return canMoveL;
@@ -329,3 +345,24 @@ board = [
   ];
   render();
 }
+
+function gameLoseBoardTest() {
+    board = [
+        [1,0,3,4],
+       [16,1,2,1],
+       [2,4,16,4],
+       [16,2,4,8]
+      ];
+      render();
+      checkEndGame();
+    }
+
+
+// function TestLeft() {
+//     board = [
+//         [null,null,null],
+//         [null,2,32,8],
+//         [null,16,128,16],
+//         [null,2,4,8]
+//       ];
+// }
