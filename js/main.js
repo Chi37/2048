@@ -101,11 +101,15 @@ function render(){
         }
     });
     document.querySelector('h3').textContent = `Score: ${score}`;
+    if(checkEndGame()){
+        document.querySelector('h3').textContent = `GAME OVER!
+            Your Score is: ${score}`;
+     }
 }
 
 //R,L,U,D methods
 function executeRightArrow(){
-    canMove = canMoveRightOrUp();
+    canMove = canMoveRightOrUp(board);
     if(!canMove){return};
     slide(board);
     combineR(board);
@@ -117,8 +121,8 @@ function executeRightArrow(){
 
  function executeLeftArrow(){
  
-    canMove = canMoveLeftOrDown();
-    if(!canMove){return};
+    canMove = canMoveLeftOrDown(board);
+    if(!canMove){console.log('canMove returning');return};
     slideL(board);
     combine();
     slideL(board);
@@ -129,7 +133,7 @@ function executeRightArrow(){
  function executeUpArrow(){
 
     rotate(board);
-    canMove = canMoveRightOrUp();
+    canMove = canMoveRightOrUp(board);
     if(!canMove){
         rotate(board);rotate(board);rotate(board);
         return;
@@ -144,9 +148,9 @@ function executeRightArrow(){
  function executeDownArrow(){  
 
      rotate(board);
-     console.table(board)
-     canMove = canMoveLeftOrDown();
-     if(!canMove){
+     canMoveL = canMoveLeftOrDown(board);
+     console.log(canMoveL)
+     if(!canMoveL){
          rotate(board);rotate(board);rotate(board);
          return;
         }
@@ -156,12 +160,6 @@ function executeRightArrow(){
      rotate(board);rotate(board);rotate(board);
      randomCellGenerator();
 }
-
-function checkEndGame() {
-    //if each row does not return null and canMove functions are false
-}
-
-
 
 /** TODO: refactor slide code below to maybe HOH function with callback */
 
@@ -253,27 +251,23 @@ function rotate(board) {
 /* ------------------ */
 
 
-//check end of game after combine
-function checkEndGame(){
-    let canMoveLD, canMoveRU
-    canMoveLD = canMoveLeftOrDown();
-    canMoveRU = canMoveRightOrUp();
-    if((!canMoveLD) && (!canMoveRU) ) {
-        alert('No more Moves')
+// check end of game after combine
+function checkEndGame(b){
+    canMoveD = canMoveLeftOrDown(board);
+    canMoveU =canMoveRightOrUp(board);
+    canMoveL = canMoveLeftOrDown(board);
+    canMoveR = canMoveRightOrUp(board);
+
+    if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD) ) {
+        return true;
     }
-    // for (let i = 0; i < board.length; i++){
-    //     for (let j = 0; j< board[0].length; j++){
-    //         gameEnd = !board[i][j] ? false : true;
-           
-    //     };
-    };
- 
+    console.log(canMoveL, canMoveD,canMoveR, canMoveU)
+};
+   
+ function canMoveLeftOrDown (board){
 
-
-
-  
- function canMoveLeftOrDown (){
-    let canMove = board.some(row => {
+    let canMoveL = board.some(row => {
+        console.log(`row: ${row}`)
         // check if two adjacent non-zero values
         if (row.some((val, idx) => val && val === row[idx + 1])) return true;
         // check if zero is good
@@ -287,26 +281,51 @@ function checkEndGame(){
         }
         return false;
       });
-      return canMove;
+      return canMoveL;
  }
 
-function canMoveRightOrUp (){
-let canMove = board.some(row => {
+function canMoveRightOrUp (board){
+let canMoveR = board.some(row => {
     // check if two adjacent non-zero values
-    if (row.some((val, idx) => val && val === row[idx + 1])) return true;
-    // check if null is good
+  
+    if (row.some((val, idx) => val && val === row[idx + 1])){return true} ;
+    // didn't see any truthy vales, so sawNum false
     let sawNum = false;
     return row.some(val => {
+        console.log(`val ${val} at ${row}`)
       if (val) {
         sawNum = true;
         return false;
       } else if (sawNum) {
+          console.log(`else if loops val: ${val} where sawNum is ${sawNum} and returns true`)
         return true;
       } else {
         return false;
       }
     });
   });
-  return canMove;
+  console.log(`canMove condition returned ${canMoveR}`)
+  return canMoveR;
 }
-  
+
+
+
+
+
+// function TestEndGame() {
+//     board = [
+//         [2,4,1,4],
+//         [],
+//         [],
+//         []
+//     ]
+// }
+function gameLoseBoard() {
+board = [
+    [1,4,3,4],
+   [16,1,2,1],
+   [2,4,16,4],
+   [16,2,4,8]
+  ];
+  render();
+}

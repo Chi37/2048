@@ -32,8 +32,29 @@ body {
 .container {
    display: grid;
    justify-content: center;
-   grid-template-columns: auto 30px auto ;
+   grid-template-columns: auto 10px auto ;
   
 
 }
 
+@media (max-width: 760px) {
+    .grid-container {
+        display: grid;
+        align-items: center;
+        grid-template-columns: auto auto auto auto;
+        grid-template-rows: auto auto auto auto; 
+        font-size: 10px;
+
+     }
+
+     .el {
+        padding: 10px;
+        text-align: center;
+        border: solid whitesmoke 2px;
+        background-color: thistle;
+        height: 30px;
+        width: 30px;
+        
+    }
+
+   }
