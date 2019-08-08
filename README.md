@@ -12,4 +12,5 @@
 This is my attempt at making the 2048 game. 
 
 TODO: Refactor Code <br>
-TODO: Make this project objects all the way down
+TODO: Make this project objects all the way down <br>
+TODO: Make user interface better/ more fun 
