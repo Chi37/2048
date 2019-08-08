@@ -107,11 +107,12 @@ function render(){
     if (checkPlayerLose()){
         document.querySelector('h3').textContent = `GAME OVER!
         Your Score is: ${score}`;
-        document.querySelector('h3').color = 'red'
+        document.querySelector('h3').style.color = '#DC143C'
     } else if(playerWins()){
         console.log('render')
         document.querySelector('h3').textContent = `YOU WINNN!
         Your Score is: ${score}`;
+        document.querySelector('h3').style.color = '#00BFFF'
     }
 }
 //R,L,U,D methods

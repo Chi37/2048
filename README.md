@@ -9,7 +9,9 @@
    [wiki-link]: https://en.wikipedia.org/wiki/2048_(video_game) 
 
 
+![](demo.gif)
 This is my attempt at making the 2048 game. 
+
 
 TODO: Refactor Code <br>
 TODO: Make this project objects all the way down
