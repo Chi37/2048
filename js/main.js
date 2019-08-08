@@ -104,18 +104,16 @@ function render(){
 
     document.querySelector('h3').textContent = `Score: ${score}`;
 
-
-    if(checkEndGame()){
+    if (checkPlayerLose()){
         document.querySelector('h3').textContent = `GAME OVER!
         Your Score is: ${score}`;
         document.querySelector('h3').color = 'red'
-    }
-
-    if(playerWins()){
-        
+    } else if(playerWins()){
+        console.log('render')
+        document.querySelector('h3').textContent = `YOU WINNN!
+        Your Score is: ${score}`;
     }
 }
-
 //R,L,U,D methods
 function executeRightArrow(){
     canMove = canMoveRightOrUp(board);
@@ -191,7 +189,6 @@ function slide(arr){
             }
         arr[i] = newA;
     }
-    // render();
 }
 
 
@@ -294,7 +291,7 @@ let canMoveR = board.some(row => {
 
 
 // check end of game after combine
-function checkEndGame(){
+function checkPlayerLose(){
     var copyArr = [];
     board.forEach(function(each){
         copyArr.push(each);
@@ -310,23 +307,23 @@ function checkEndGame(){
     canMoveL = canMoveLeftOrDown(copyArr);
     canMoveR = canMoveRightOrUp(copyArr);
 
-
-    if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD) ) {
+    if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD)) {
         gameEnd = true;
         return gameEnd;
-    }
-    
+    };    
 };
 
- function playerWins() {
+
+
+function playerWins(){
+    console.log('pw invoked')
     board.forEach(function(row){
         if(row.includes(2048)){
             gameEnd = true;
-            return gameEnd;
-        }
+        };
     });
- };
-
+    return gameEnd;
+}
 
 
 
@@ -350,7 +347,6 @@ function gameLoseBoardTest() {
        [16,2,4,8]
       ];
       render();
-      checkEndGame();
     }
 
 function gameWinBoardTest() { 
@@ -361,14 +357,23 @@ function gameWinBoardTest() {
         [16,2,1024,8]
         ];
         render();
-        checkEndGame();
     }
     
 function TestLeft() {
     board = [
-        [null,null,null],
+        [null,null,null,null],
         [null,2,32,8],
         [null,16,128,16],
         [null,2,4,8]
       ];
+}
+
+function cantMoveLeft(){
+    board = [
+        [8,2,null,null],
+        [4,2,32,8],
+        [16,128,16,null],
+        [2,4,8,null]
+      ];
+    render();
 }
