@@ -12,9 +12,9 @@ const mapColors =  {
     64:'#33c0ff',
     128: '#2b24f8',
     256: '#ffbfad',
-    512: '#ff5b2e',
-    1024: 'violetblue',
-    2048: 'goldenrod',
+    512: '#ff6666',
+    1024: '#cc00cc',
+    2048: '#cc0052',
 };
 
  /*----- app's state (variables) -----*/ 
@@ -22,7 +22,6 @@ const mapColors =  {
 
     board = [];
     score;
-
 
 /*----- cached element references -----*/
 
@@ -43,6 +42,7 @@ init();
 function init() {
     score = 0;
     let i = 0;
+    gameEnd = false;
    
     for (let i=0; i<4; i++){
         board.push([null,null,null,null])
@@ -74,6 +74,7 @@ function getBoardCell(row,col){
 }
 
 function updateBoard(e){
+    if (gameEnd){return}
     switch (e.keyCode) {
         case 37: //left 
            executeLeftArrow();
@@ -100,11 +101,19 @@ function render(){
             document.getElementById(`cell${num}`).style.backgroundColor = mapColors[row[i]];
         }
     });
+
     document.querySelector('h3').textContent = `Score: ${score}`;
+
+
     if(checkEndGame()){
         document.querySelector('h3').textContent = `GAME OVER!
-            Your Score is: ${score}`;
-     }
+        Your Score is: ${score}`;
+        document.querySelector('h3').color = 'red'
+    }
+
+    if(playerWins()){
+        
+    }
 }
 
 //R,L,U,D methods
@@ -122,7 +131,7 @@ function executeRightArrow(){
  function executeLeftArrow(){
  
     canMove = canMoveLeftOrDown(board);
-    if(!canMove){console.log('canMove returning');return};
+    if(!canMove) return;
     slideL(board);
     combine();
     slideL(board);
@@ -151,7 +160,6 @@ function executeRightArrow(){
 
      rotate(board);
      canMoveL = canMoveLeftOrDown(board);
-     console.log(canMoveL)
      if(!canMoveL){
          rotate(board);rotate(board);rotate(board);
          render();
@@ -166,6 +174,10 @@ function executeRightArrow(){
 }
 
 /** TODO: refactor slide code below to maybe HOH function with callback */
+// ********  Trying to refactor and make two callback functions for slide higher order function ********* //
+    // var push = (arr,num = 0) => arr.push(num);
+    // var unshift = (arr, num = 0) => arr.unshift(0);
+/* ------------------ */
 
 function slide(arr){
     for (let i = 0; i<board.length; i++){
@@ -196,7 +208,6 @@ function slideL(arr){
             }
         arr[i] = newA;
     }
-    // render();
 }
 
 function combineR() {
@@ -209,7 +220,6 @@ function combineR() {
             }
         }
     }
-    // render();
 }
     
 function combine() {
@@ -222,66 +232,28 @@ function combine() {
             }
         }
     }
-    
-    // render();
 };
 
 
 
 function rotate(board) {
-    console.log(board)
     let n = board.length;
     let x = Math.floor(n/ 2); //loop depending on size of matrix
     let y = n - 1; //highest index 
     for (let i = 0; i < x; i++) {
        for (let j = i; j < y - i; j++) {
-          k = board[i][j]; //tmp value to hold first value
+          k = board[i][j]; //tmp var to hold first value
           board[i][j] = board[y - j][i];
           board[y - j][i] = board[y - i][y - j];
           board[y - i][y - j] = board[j][y - i]
           board[j][y - i] = k
        }
     }
-    // render();
-    console.log(board)
   }
 
-
-
-
-/** TODO: CanMove CHECKER */
-
-// ********  Trying to refactor and make two callback functions for slide higher order function ********* //
-    // var push = (arr,num = 0) => arr.push(num);
-    // var unshift = (arr, num = 0) => arr.unshift(0);
-/* ------------------ */
-
-
-// check end of game after combine
-function checkEndGame(){
-    var copyArr = [];
-    board.forEach(function(each){
-        copyArr.push(each);
-    })
-    
-    console.table(copyArr)
-    rotate(copyArr);
-    canMoveD = canMoveLeftOrDown(copyArr);
-    canMoveU =canMoveRightOrUp(copyArr);
-    rotate(copyArr);rotate(copyArr);rotate(copyArr);
-    canMoveL = canMoveLeftOrDown(copyArr);
-    canMoveR = canMoveRightOrUp(copyArr);
-
-    if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD) ) {
-        return true;
-    }
-    // console.log(canMoveL, canMoveD,canMoveR, canMoveU)
-};
-   
  function canMoveLeftOrDown (board){
 
     let canMoveL = board.some(row => {
-        console.log(`row: ${row}`)
         // check if two adjacent non-zero values
         if (row.some((val, idx) => val && val === row[idx + 1])) return true;
         // check if zero is good
@@ -294,7 +266,6 @@ function checkEndGame(){
             return true;
           }
         }
-        console.log(`false ${sawNum}`)
         return false;
       });
       return canMoveL;
@@ -308,34 +279,59 @@ let canMoveR = board.some(row => {
     // didn't see any truthy vales, so sawNum false
     let sawNum = false;
     return row.some(val => {
-        console.log(`val ${val} at ${row}`)
       if (val) {
         sawNum = true;
         return false;
       } else if (sawNum) {
-          console.log(`else if loops val: ${val} where sawNum is ${sawNum} and returns true`)
         return true;
       } else {
         return false;
       }
     });
   });
-  console.log(`canMove condition returned ${canMoveR}`)
-  return canMoveR;
+    return canMoveR;
 }
 
 
+// check end of game after combine
+function checkEndGame(){
+    var copyArr = [];
+    board.forEach(function(each){
+        copyArr.push(each);
+    })
+
+    //check up and down, so rotate first
+    rotate(copyArr);
+    canMoveD = canMoveLeftOrDown(copyArr);
+    canMoveU = canMoveRightOrUp(copyArr);
+
+    //check left and right so rotate back
+    rotate(copyArr);rotate(copyArr);rotate(copyArr);
+    canMoveL = canMoveLeftOrDown(copyArr);
+    canMoveR = canMoveRightOrUp(copyArr);
+
+
+    if((!canMoveL) && (!canMoveR) && (!canMoveU) && (!canMoveD) ) {
+        gameEnd = true;
+        return gameEnd;
+    }
+    
+};
+
+ function playerWins() {
+    board.forEach(function(row){
+        if(row.includes(2048)){
+            gameEnd = true;
+            return gameEnd;
+        }
+    });
+ };
 
 
 
-// function TestEndGame() {
-//     board = [
-//         [2,4,1,4],
-//         [],
-//         [],
-//         []
-//     ]
-// }
+
+
+/** SOME TESTING */
 function gameLoseBoard() {
 board = [
     [1,4,3,4],
@@ -348,8 +344,8 @@ board = [
 
 function gameLoseBoardTest() {
     board = [
-        [1,0,3,4],
-       [16,1,2,1],
+        [2,32,3,4],
+       [16,8,2,16],
        [2,4,16,4],
        [16,2,4,8]
       ];
@@ -357,12 +353,22 @@ function gameLoseBoardTest() {
       checkEndGame();
     }
 
-
-// function TestLeft() {
-//     board = [
-//         [null,null,null],
-//         [null,2,32,8],
-//         [null,16,128,16],
-//         [null,2,4,8]
-//       ];
-// }
+function gameWinBoardTest() { 
+    board = [
+        [512,0,3,4],
+        [16,1,2048,1],
+        [2,4,16,4],
+        [16,2,1024,8]
+        ];
+        render();
+        checkEndGame();
+    }
+    
+function TestLeft() {
+    board = [
+        [null,null,null],
+        [null,2,32,8],
+        [null,16,128,16],
+        [null,2,4,8]
+      ];
+}
