@@ -12,9 +12,20 @@
 ![demo](demo.gif)
 
 <br>
-This is my attempt at making the 2048 game. 
+This is my attempt at making the 2048 game. <br>
 
+### Play by pressing the arrow keys and try to combine the boxes until you reach 2048
 
+## [Play game here](https://chi37.github.io/2048)
+
+## Technologies use:
+* Vanilla JS
+* HTML
+* CSS 
+
+## Improvement Goals:
 TODO: Refactor Code <br>
 TODO: Make this project objects all the way down <br>
-TODO: Make user interface better/ more fun 
+TODO: Make user interface better/ more fun <br>
+TODO: Generate other themes
+
