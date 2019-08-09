@@ -28,4 +28,5 @@ TODO: Refactor Code <br>
 TODO: Make this project objects all the way down <br>
 TODO: Make user interface better/ more fun <br>
 TODO: Generate other themes
+TODO: refactor slide code below to maybe HOH function with callback 
 

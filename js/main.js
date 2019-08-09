@@ -25,16 +25,9 @@ const mapColors =  {
 
 /*----- cached element references -----*/
 
-//cache board arrays to look up the individual cells later and check if it is 0 ?
-let cell = document.querySelectorAll('el') 
-//  var idx = parseInt(evt.target.id.replace('sq', ''));
 
 /*----- event listeners -----*/ 
 document.addEventListener('keydown', updateBoard);
-
-// TODO:
-
-//add reset button. On click call init
 
 /*----- functions -----*/
 init();
@@ -99,6 +92,7 @@ function render(){
             let num = getBoardCell(board.indexOf(row),i);
             document.getElementById(`cell${num}`).textContent = row[i];
             document.getElementById(`cell${num}`).style.backgroundColor = mapColors[row[i]];
+
         }
     });
 
@@ -172,11 +166,6 @@ function executeRightArrow(){
      render();
 }
 
-/** TODO: refactor slide code below to maybe HOH function with callback */
-// ********  Trying to refactor and make two callback functions for slide higher order function ********* //
-    // var push = (arr,num = 0) => arr.push(num);
-    // var unshift = (arr, num = 0) => arr.unshift(0);
-/* ------------------ */
 
 function slide(arr){
     for (let i = 0; i<board.length; i++){
@@ -185,7 +174,7 @@ function slide(arr){
         newA = arr[i].filter(val => val);
         zeroes = arr.length - newA.length;
             while( counter <zeroes){
-                newA.unshift(null); ///cb function here
+                newA.unshift(null); 
                 counter++;
             }
         arr[i] = newA;
@@ -201,7 +190,7 @@ function slideL(arr){
         newA = arr[i].filter(val => val);
         zeroes = arr.length - newA.length;
             while( counter <zeroes){
-                newA.push(null); ///cb function here
+                newA.push(null); 
                 counter++;
             }
         arr[i] = newA;
@@ -317,7 +306,6 @@ function checkPlayerLose(){
 
 
 function playerWins(){
-    console.log('pw invoked')
     board.forEach(function(row){
         if(row.includes(2048)){
             gameEnd = true;
