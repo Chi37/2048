@@ -16,7 +16,7 @@ This is my attempt at making the 2048 game. <br>
 
 ### Play by pressing the arrow keys and try to combine the boxes until you reach 2048
 
-## [Play game here](https://chi37.github.io/2048)
+## [Play game here](https://chiexplores.github.io/2048)
 
 ## Technologies use:
 * Vanilla JS
